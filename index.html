@@ -1,1 +1,815 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cloud Computing 101 - Fiches de révision</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --bg: #0f172a;
+      --card-bg: #020617;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #22c55e;
+      --danger: #ef4444;
+    }
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1e293b, #020617);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 16px 24px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .logo {
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--primary), #38bdf8);
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.9);
+    }
+
+    nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    nav button {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    nav button.active {
+      background: rgba(37, 99, 235, 0.15);
+      color: #bfdbfe;
+      border: 1px solid rgba(59, 130, 246, 0.6);
+    }
+
+    nav button:hover {
+      color: #e5e7eb;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 24px auto 32px;
+      padding: 0 16px 32px;
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.2fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(37,99,235,0.18), transparent 55%);
+      border-radius: 18px;
+      padding: 20px 20px 18px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      box-shadow:
+        0 18px 45px rgba(15, 23, 42, 0.8),
+        0 0 0 0.5px rgba(15, 23, 42, 0.9);
+    }
+
+    .card-header {
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .chip {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.7);
+      color: var(--muted);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+    }
+
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .section {
+      display: none;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    h2 {
+      font-size: 16px;
+      margin-top: 10px;
+      margin-bottom: 6px;
+    }
+
+    p {
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    ul {
+      margin-left: 18px;
+      margin-bottom: 8px;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      color: var(--muted);
+    }
+
+    .highlight {
+      color: #bfdbfe;
+      font-weight: 500;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .grid-2 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .mini-card {
+      background: rgba(15, 23, 42, 0.7);
+      border-radius: 12px;
+      padding: 8px 10px;
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      font-size: 13px;
+    }
+
+    .mini-title {
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 3px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .quiz-header {
+      margin-bottom: 10px;
+    }
+
+    .quiz-question {
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .quiz-options {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 6px;
+    }
+
+    .quiz-options li {
+      margin: 0;
+    }
+
+    .quiz-options label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      border-radius: 10px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      cursor: pointer;
+      font-size: 13px;
+      background: rgba(15, 23, 42, 0.75);
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .quiz-options input {
+      accent-color: var(--primary);
+    }
+
+    .quiz-options label:hover {
+      border-color: rgba(59, 130, 246, 0.9);
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    .btn-row {
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      box-shadow: none;
+    }
+
+    .quiz-result {
+      font-size: 13px;
+      margin-top: 6px;
+      min-height: 18px;
+    }
+
+    .quiz-result span {
+      font-weight: 600;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      padding: 12px 8px 18px;
+      border-top: 1px solid rgba(148, 163, 184, 0.25);
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <span class="logo-dot"></span>
+    <span>EXPOSE: Application web hébergée sur le cloud en haute disponibilité.
+</span>
+  </div>
+  <nav>
+    <button class="tab-btn active" data-target="intro">Introduction</button>
+    <button class="tab-btn" data-target="notions">Notions de base</button>
+    <button class="tab-btn" data-target="services">IaaS&nbsp;/&nbsp;PaaS&nbsp;/&nbsp;SaaS</button>
+    <button class="tab-btn" data-target="securite">Sécurité</button>
+    <button class="tab-btn" data-target="quiz">Mini‑quiz</button>
+  </nav>
+</header>
+
+<main>
+  <!-- Colonne gauche : fiches -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title" id="section-title">Introduction</div>
+        <div class="muted" id="section-subtitle">Vue d’ensemble du cloud computing</div>
+      </div>
+      <span class="chip">Révision débutant</span>
+    </div>
+
+    <!-- Intro -->
+    <article id="intro" class="section active">
+      <div class="tag-row">
+        <span class="tag">Définition</span>
+        <span class="tag">Avantages</span>
+        <span class="tag">Exemples concrets</span>
+      </div>
+
+      <h2>Qu’est‑ce que le cloud&nbsp;?</h2>
+      <p>
+        Le <span class="highlight">cloud computing</span> consiste à utiliser des ressources
+        informatiques (serveurs, stockage, bases de données, réseaux, logiciels) via Internet,
+        à la demande, et généralement en paiement à l’usage.
+      </p>
+
+      <h2>Idée clé</h2>
+      <p>
+        Au lieu d’acheter et gérer ton propre matériel dans un data center, tu loues des
+        ressources chez un fournisseur (comme AWS, Azure, Google Cloud) et tu les ajustes
+        en fonction de tes besoins.
+      </p>
+
+      <h2>Avantages principaux</h2>
+      <ul>
+        <li><span class="highlight">Élasticité</span> : augmenter ou diminuer les ressources rapidement.</li>
+        <li><span class="highlight">Coût</span> : tu paies surtout ce que tu consommes (modèle pay‑as‑you‑go).</li>
+        <li><span class="highlight">Accès global</span> : accès aux services depuis partout avec Internet.</li>
+        <li><span class="highlight">Rapidité</span> : déployer des serveurs ou des services en quelques minutes.</li>
+      </ul>
+
+      <h2>Exemples au quotidien</h2>
+      <ul>
+        <li>Stockage de fichiers dans le cloud : Google Drive, OneDrive, Dropbox.</li>
+        <li>Messagerie et outils bureautiques : Gmail, Outlook.com, Microsoft 365.</li>
+        <li>Streaming vidéo et musique : Netflix, YouTube, Spotify.</li>
+      </ul>
+    </article>
+
+    <!-- Notions de base -->
+    <article id="notions" class="section">
+      <div class="tag-row">
+        <span class="tag">On‑demand</span>
+        <span class="tag">Scalabilité</span>
+        <span class="tag">Types de cloud</span>
+      </div>
+
+      <h2>Caractéristiques essentielles</h2>
+      <ul>
+        <li><span class="highlight">Self‑service à la demande</span> : créer soi‑même des ressources sans passer par un humain.</li>
+        <li><span class="highlight">Élasticité et scalabilité</span> : ajuster la capacité automatiquement ou très rapidement.</li>
+        <li><span class="highlight">Accès réseau global</span> : les ressources sont accessibles via Internet.</li>
+        <li><span class="highlight">Ressources mutualisées</span> : le fournisseur partage l’infrastructure entre plusieurs clients.</li>
+        <li><span class="highlight">Service mesuré</span> : consommation suivie et facturée précisément (CPU, stockage, trafic, etc.).</li>
+      </ul>
+
+      <h2>Principaux modèles de déploiement</h2>
+      <div class="grid-2">
+        <div class="mini-card">
+          <div class="mini-title">Cloud public</div>
+          <p class="muted">
+            Infrastructure partagée entre plusieurs clients, gérée par un fournisseur (AWS, Azure, GCP).
+            Tu loues des ressources dans ce cloud.
+          </p>
+        </div>
+        <div class="mini-card">
+          <div class="mini-title">Cloud privé</div>
+          <p class="muted">
+            Infrastructure dédiée à une seule organisation, souvent gérée en interne ou par un partenaire.
+          </p>
+        </div>
+        <div class="mini-card">
+          <div class="mini-title">Cloud hybride</div>
+          <p class="muted">
+            Combinaison de cloud public et privé avec interconnexion pour déplacer données et charges de travail.
+          </p>
+        </div>
+        <div class="mini-card">
+          <div class="mini-title">Multi‑cloud</div>
+          <p class="muted">
+            Utilisation de plusieurs fournisseurs de cloud en parallèle (ex : AWS + Azure + GCP).
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- IaaS / PaaS / SaaS -->
+    <article id="services" class="section">
+      <div class="tag-row">
+        <span class="tag">IaaS</span>
+        <span class="tag">PaaS</span>
+        <span class="tag">SaaS</span>
+      </div>
+
+      <h2>Les trois grands modèles de service</h2>
+
+      <div class="grid-2">
+        <div class="mini-card">
+          <div class="mini-title">IaaS – Infrastructure as a Service</div>
+          <p class="muted">
+            Le fournisseur te loue des <span class="highlight">ressources de base</span> :
+            machines virtuelles, stockage, réseau. Tu gères toi‑même le système d’exploitation
+            et tout ce qui est au‑dessus.
+          </p>
+          <p class="muted">
+            Exemples : machines virtuelles AWS EC2, Azure Virtual Machines, Google Compute Engine.
+          </p>
+        </div>
+
+        <div class="mini-card">
+          <div class="mini-title">PaaS – Platform as a Service</div>
+          <p class="muted">
+            Le fournisseur te fournit une <span class="highlight">plateforme</span> pour déployer
+            ton application (runtime, base de données, outils) sans gérer les serveurs ou l’OS.
+          </p>
+          <p class="muted">
+            Exemples : Heroku, Azure App Service, Google App Engine.
+          </p>
+        </div>
+
+        <div class="mini-card">
+          <div class="mini-title">SaaS – Software as a Service</div>
+          <p class="muted">
+            Tu utilises directement une <span class="highlight">application complète</span> gérée par le fournisseur,
+            souvent dans un navigateur.
+          </p>
+          <p class="muted">
+            Exemples : Gmail, Salesforce, Microsoft 365, Google Workspace.
+          </p>
+        </div>
+
+        <div class="mini-card">
+          <div class="mini-title">Qui gère quoi&nbsp;?</div>
+          <p class="muted">
+            Plus tu vas vers le SaaS, plus le fournisseur gère d’éléments (infrastructure, OS, application).
+            En IaaS, tu gères beaucoup ; en SaaS, tu gères surtout les données et les utilisateurs.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Sécurité -->
+    <article id="securite" class="section">
+      <div class="tag-row">
+        <span class="tag">Sécurité</span>
+        <span class="tag">Responsabilités</span>
+        <span class="tag">Bonnes pratiques</span>
+      </div>
+
+      <h2>Responsabilités partagées</h2>
+      <p>
+        En cloud, la sécurité est basée sur le principe de <span class="highlight">responsabilité partagée</span> :
+        le fournisseur protège l’infrastructure du cloud, et le client doit protéger ce qu’il met dans le cloud
+        (configurations, comptes, données).
+      </p>
+
+      <h2>Points clés de la sécurité</h2>
+      <ul>
+        <li><span class="highlight">Contrôle d’accès</span> (IAM, rôles, permissions).</li>
+        <li><span class="highlight">Chiffrement</span> des données au repos et en transit.</li>
+        <li><span class="highlight">Sauvegardes et redondance</span> pour la disponibilité.</li>
+        <li><span class="highlight">Surveillance</span> (logs, alertes) pour détecter les problèmes.</li>
+      </ul>
+
+      <h2>Exemples</h2>
+      <ul>
+        <li>Configurer des mots de passe forts et l’authentification multi‑facteur sur ton compte cloud.</li>
+        <li>Limiter les droits des utilisateurs au strict nécessaire (principe du moindre privilège).</li>
+        <li>Activer le chiffrement des disques et des bases de données dans le cloud.</li>
+      </ul>
+    </article>
+
+    <!-- Quiz -->
+    <article id="quiz" class="section">
+      <div class="tag-row">
+        <span class="tag">Quiz</span>
+        <span class="tag">Auto‑évaluation</span>
+      </div>
+
+      <div class="quiz-header">
+        <h2>Mini‑quiz Cloud 101</h2>
+        <p class="muted">Réponds aux questions, puis clique sur « Corriger » pour voir ton score.</p>
+      </div>
+
+      <div id="quiz-container">
+        <!-- Q1 -->
+        <div class="quiz-question">
+          1. Le cloud computing, c’est principalement…
+        </div>
+        <ul class="quiz-options">
+          <li>
+            <label>
+              <input type="radio" name="q1" value="a" />
+              <span>Un type de réseau social.</span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="radio" name="q1" value="b" />
+              <span>La distribution de logiciels sur CD‑ROM.</span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="radio" name="q1" value="c" />
+              <span>L’utilisation de ressources informatiques via Internet, à la demande.</span>
+            </label>
+          </li>
+        </ul>
+
+        <!-- Q2 -->
+        <div class="quiz-question" style="margin-top:10px;">
+          2. Quel modèle correspond à l’<strong>Infrastructure as a Service</strong> (IaaS) ?
+        </div>
+        <ul class="quiz-options">
+          <li>
+            <label>
+              <input type="radio" name="q2" value="a" />
+              <span>Tu utilises une application complète comme Gmail.</span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="radio" name="q2" value="b" />
+              <span>Tu loues des machines virtuelles et du stockage pour installer ce que tu veux.</span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="radio" name="q2" value="c" />
+              <span>Tu déploies ton code sur une plateforme gérée (par ex. App Engine).</span>
+            </label>
+          </li>
+        </ul>
+
+        <!-- Q3 -->
+        <div class="quiz-question" style="margin-top:10px;">
+          3. Quel avantage est typiquement associé au cloud ?
+        </div>
+        <ul class="quiz-options">
+          <li>
+            <label>
+              <input type="radio" name="q3" value="a" />
+              <span>Tu dois acheter tous les serveurs toi‑même.</span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="radio" name="q3" value="b" />
+              <span>Tu peux ajuster rapidement les ressources selon la charge.</span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="radio" name="q3" value="c" />
+              <span>Il n’y a jamais de facture.</span>
+            </label>
+          </li>
+        </ul>
+
+        <!-- Q4 -->
+        <div class="quiz-question" style="margin-top:10px;">
+          4. Dans un modèle de <strong>responsabilité partagée</strong>…
+        </div>
+        <ul class="quiz-options">
+          <li>
+            <label>
+              <input type="radio" name="q4" value="a" />
+              <span>Le fournisseur gère tout, le client n’a aucune responsabilité.</span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="radio" name="q4" value="b" />
+              <span>Le client gère l’infrastructure physique.</span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="radio" name="q4" value="c" />
+              <span>Le fournisseur protège le cloud, le client protège ce qu’il met dans le cloud.</span>
+            </label>
+          </li>
+        </ul>
+
+        <!-- Q5 -->
+        <div class="quiz-question" style="margin-top:10px;">
+          5. Lequel est un exemple typique de SaaS ?
+        </div>
+        <ul class="quiz-options">
+          <li>
+            <label>
+              <input type="radio" name="q5" value="a" />
+              <span>Une machine virtuelle EC2 sur AWS.</span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="radio" name="q5" value="b" />
+              <span>Une base de données installée sur ton propre serveur.</span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="radio" name="q5" value="c" />
+              <span>Une application en ligne comme Gmail ou Salesforce.</span>
+            </label>
+          </li>
+        </ul>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn" id="btn-corriger">Corriger</button>
+        <button class="btn btn-outline" id="btn-reset">Réinitialiser</button>
+        <div class="quiz-result" id="quiz-result"></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- Colonne droite : résumé / aide-mémoire -->
+  <aside class="card">
+    <div class="card-header">
+      <div class="card-title">Aide‑mémoire rapide</div>
+      <span class="pill">
+        <span class="pill-dot"></span>
+        <span>Pour réviser avant un quiz</span>
+      </span>
+    </div>
+
+    <h2>À retenir absolument</h2>
+    <ul>
+      <li><span class="highlight">Cloud</span> : ressources informatiques via Internet, à la demande.</li>
+      <li><span class="highlight">IaaS</span> : tu gères l’OS et les applis (VM, stockage).</li>
+      <li><span class="highlight">PaaS</span> : tu gères ton code, pas l’infra.</li>
+      <li><span class="highlight">SaaS</span> : tu utilises une appli prête à l’emploi.</li>
+      <li><span class="highlight">Responsabilité partagée</span> : fournisseur + client ont chacun une part de la sécurité.</li>
+    </ul>
+
+    <h2 style="margin-top:10px;">Petits scénarios</h2>
+    <div class="mini-card" style="margin-top:6px;">
+      <div class="mini-title">Je veux juste envoyer des mails</div>
+      <p class="muted">
+        Utiliser un webmail comme Gmail ou Outlook.com → modèle SaaS.
+      </p>
+    </div>
+    <div class="mini-card" style="margin-top:6px;">
+      <div class="mini-title">Je veux déployer mon site avec mon code</div>
+      <p class="muted">
+        Choisir une plateforme qui gère l’infra (PaaS) ou des VM (IaaS) selon le niveau de contrôle souhaité.
+      </p>
+    </div>
+  </aside>
+</main>
+
+<footer>
+  Cloud Computing – Fiches de révision statiques hébergées dans le cloud AWS. <u>ETUDIANT</u>: FOBISSIE ESSENGUE KURTIS MIGUEL
+</footer>
+
+<script>
+  // Navigation entre fiches
+  const tabButtons = document.querySelectorAll(".tab-btn");
+  const sections = document.querySelectorAll(".section");
+  const titleMap = {
+    intro: {
+      title: "Introduction",
+      subtitle: "Vue d’ensemble du cloud computing"
+    },
+    notions: {
+      title: "Notions de base",
+      subtitle: "Caractéristiques et modèles de déploiement"
+    },
+    services: {
+      title: "Modèles de service",
+      subtitle: "IaaS, PaaS et SaaS"
+    },
+    securite: {
+      title: "Sécurité",
+      subtitle: "Responsabilités et bonnes pratiques"
+    },
+    quiz: {
+      title: "Mini‑quiz",
+      subtitle: "Teste tes connaissances"
+    }
+  };
+
+  const sectionTitle = document.getElementById("section-title");
+  const sectionSubtitle = document.getElementById("section-subtitle");
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const target = btn.getAttribute("data-target");
+
+      tabButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      sections.forEach(sec => {
+        sec.classList.toggle("active", sec.id === target);
+      });
+
+      if (titleMap[target]) {
+        sectionTitle.textContent = titleMap[target].title;
+        sectionSubtitle.textContent = titleMap[target].subtitle;
+      }
+    });
+  });
+
+  // Mini-quiz
+  const correctAnswers = {
+    q1: "c",
+    q2: "b",
+    q3: "b",
+    q4: "c",
+    q5: "c"
+  };
+
+  const btnCorriger = document.getElementById("btn-corriger");
+  const btnReset = document.getElementById("btn-reset");
+  const quizResult = document.getElementById("quiz-result");
+
+  btnCorriger.addEventListener("click", () => {
+    let score = 0;
+    let total = Object.keys(correctAnswers).length;
+
+    for (const q in correctAnswers) {
+      const selected = document.querySelector(`input[name="${q}"]:checked`);
+      if (selected && selected.value === correctAnswers[q]) {
+        score++;
+      }
+    }
+
+    const percent = Math.round((score / total) * 100);
+    let message;
+
+    if (percent === 100) {
+      message = "Excellent ! Tu maîtrises déjà très bien les bases du cloud.";
+    } else if (percent >= 60) {
+      message = "Bon résultat. Relis les fiches où tu as hésité pour être plus à l’aise.";
+    } else {
+      message = "Pas grave si c’est bas, relis les fiches de base et réessaie.";
+    }
+
+    quizResult.innerHTML =
+      `Score : <span>${score} / ${total}</span> (${percent} %) – ${message}`;
+    quizResult.style.color = percent >= 60 ? "var(--accent)" : "var(--danger)";
+  });
+
+  btnReset.addEventListener("click", () => {
+    const radios = document.querySelectorAll('#quiz input[type="radio"]');
+    radios.forEach(r => r.checked = false);
+    quizResult.textContent = "";
+  });
+</script>
+</body>
+</html>
