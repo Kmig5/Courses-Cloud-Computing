@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Cloud Computing Fiches de révision</title>
+  <title>Cloud Computing 101 - Fiches de révision</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
@@ -72,11 +72,18 @@
       border: none;
       background: transparent;
       color: var(--muted);
-      padding: 6px 10px;
+      padding: 6px 12px;
       border-radius: 999px;
       font-size: 13px;
       cursor: pointer;
       transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tab-icon {
+      font-size: 14px;
     }
 
     nav button.active {
@@ -87,6 +94,7 @@
 
     nav button:hover {
       color: #e5e7eb;
+      transform: translateY(-1px);
     }
 
     main {
@@ -158,14 +166,20 @@
       background: var(--accent);
     }
 
+    /* Animation de sections */
     .section {
       display: none;
       font-size: 14px;
       line-height: 1.5;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
     }
 
     .section.active {
       display: block;
+      opacity: 1;
+      transform: translateY(0);
     }
 
     h2 {
@@ -272,7 +286,7 @@
       cursor: pointer;
       font-size: 13px;
       background: rgba(15, 23, 42, 0.75);
-      transition: border-color 0.15s ease, background 0.15s ease;
+      transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
     }
 
     .quiz-options input {
@@ -282,6 +296,7 @@
     .quiz-options label:hover {
       border-color: rgba(59, 130, 246, 0.9);
       background: rgba(15, 23, 42, 0.95);
+      transform: translateY(-1px);
     }
 
     .btn-row {
@@ -305,6 +320,12 @@
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
       box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(37, 99, 235, 0.35);
     }
 
     .btn-outline {
@@ -331,21 +352,53 @@
       padding: 12px 8px 18px;
       border-top: 1px solid rgba(148, 163, 184, 0.25);
     }
+
+    /* Barre de progression du quiz */
+    #quiz-progress {
+      width: 100%;
+      height: 6px;
+      background: rgba(148, 163, 184, 0.35);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    #quiz-progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #22c55e, #16a34a);
+      transition: width 0.25s ease;
+    }
+
+    /* Score en haut du quiz */
+    #quiz-header-inline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    #quiz-score-value {
+      color: var(--accent);
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
 <header>
   <div class="logo">
     <span class="logo-dot"></span>
-    <span>EXPOSE: Application web hébergée sur le cloud en haute disponibilité.
-</span>
+    <span>EXPOSE: Application web hébergée sur le cloud en haute disponibilité.</span>
   </div>
   <nav>
-    <button class="tab-btn active" data-target="intro">Introduction</button>
-    <button class="tab-btn" data-target="notions">Notions de base</button>
-    <button class="tab-btn" data-target="services">IaaS&nbsp;/&nbsp;PaaS&nbsp;/&nbsp;SaaS</button>
-    <button class="tab-btn" data-target="securite">Sécurité</button>
-    <button class="tab-btn" data-target="quiz">Mini‑quiz</button>
+    <button class="tab-btn active" data-target="intro"><span class="tab-icon">🏁</span>Introduction</button>
+    <button class="tab-btn" data-target="notions"><span class="tab-icon">📚</span>Notions de base</button>
+    <button class="tab-btn" data-target="services"><span class="tab-icon">🧩</span>IaaS&nbsp;/&nbsp;PaaS&nbsp;/&nbsp;SaaS</button>
+    <button class="tab-btn" data-target="securite"><span class="tab-icon">🔒</span>Sécurité</button>
+    <button class="tab-btn" data-target="quiz"><span class="tab-icon">📝</span>Mini‑quiz</button>
   </nav>
 </header>
 
@@ -538,9 +591,19 @@
         <span class="tag">Auto‑évaluation</span>
       </div>
 
+      <!-- Header avec progression + score -->
+      <div id="quiz-header-inline">
+        <span>Mini‑quiz Cloud 101</span>
+        <span>Score : <span id="quiz-score-value">0 / 5</span></span>
+      </div>
+
+      <!-- Barre de progression -->
+      <div id="quiz-progress">
+        <div id="quiz-progress-bar"></div>
+      </div>
+
       <div class="quiz-header">
-        <h2>Mini‑quiz Cloud 101</h2>
-        <p class="muted">Réponds aux questions, puis clique sur « Corriger » pour voir ton score.</p>
+        <p class="muted">Réponds aux questions, puis clique sur « Corriger » pour voir ton score détaillé.</p>
       </div>
 
       <div id="quiz-container">
@@ -714,7 +777,8 @@
 </main>
 
 <footer>
-  Cloud Computing – Fiches de révision statiques hébergées dans le cloud AWS. <u>ETUDIANT</u>: FOBISSIE ESSENGUE KURTIS MIGUEL
+  Cloud Computing – Fiches de révision statiques hébergées dans le cloud CloudFlare.
+  <u>ETUDIANT</u>: FOBISSIE ESSENGUE KURTIS MIGUEL
 </footer>
 
 <script>
@@ -777,19 +841,51 @@
   const btnCorriger = document.getElementById("btn-corriger");
   const btnReset = document.getElementById("btn-reset");
   const quizResult = document.getElementById("quiz-result");
+  const quizScoreValue = document.getElementById("quiz-score-value");
+  const quizProgressBar = document.getElementById("quiz-progress-bar");
 
-  btnCorriger.addEventListener("click", () => {
+  const totalQuestions = Object.keys(correctAnswers).length;
+
+  function computeScore() {
     let score = 0;
-    let total = Object.keys(correctAnswers).length;
-
     for (const q in correctAnswers) {
       const selected = document.querySelector(`input[name="${q}"]:checked`);
       if (selected && selected.value === correctAnswers[q]) {
         score++;
       }
     }
+    return score;
+  }
 
-    const percent = Math.round((score / total) * 100);
+  function updateProgress() {
+    let answered = 0;
+    for (const q in correctAnswers) {
+      const selected = document.querySelector(`input[name="${q}"]:checked`);
+      if (selected) {
+        answered++;
+      }
+    }
+    const percent = Math.round((answered / totalQuestions) * 100);
+    quizProgressBar.style.width = percent + "%";
+  }
+
+  function updateScoreInline(score) {
+    quizScoreValue.textContent = `${score} / ${totalQuestions}`;
+  }
+
+  // Mise à jour progression quand on coche une réponse
+  const allRadios = document.querySelectorAll('#quiz input[type="radio"]');
+  allRadios.forEach(radio => {
+    radio.addEventListener("change", () => {
+      updateProgress();
+      const score = computeScore();
+      updateScoreInline(score);
+    });
+  });
+
+  btnCorriger.addEventListener("click", () => {
+    const score = computeScore();
+    const percent = Math.round((score / totalQuestions) * 100);
     let message;
 
     if (percent === 100) {
@@ -801,7 +897,7 @@
     }
 
     quizResult.innerHTML =
-      `Score : <span>${score} / ${total}</span> (${percent} %) – ${message}`;
+      `Score : <span>${score} / ${totalQuestions}</span> (${percent} %) – ${message}`;
     quizResult.style.color = percent >= 60 ? "var(--accent)" : "var(--danger)";
   });
 
@@ -809,6 +905,8 @@
     const radios = document.querySelectorAll('#quiz input[type="radio"]');
     radios.forEach(r => r.checked = false);
     quizResult.textContent = "";
+    quizScoreValue.textContent = `0 / ${totalQuestions}`;
+    quizProgressBar.style.width = "0%";
   });
 </script>
 </body>
